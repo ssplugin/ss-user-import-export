@@ -57,15 +57,15 @@ To install the plugin, follow these instructions.
 	- The CSV file must include all of the columns in the following:
 	- Field mapping:
 	    - Username* : Username must be a unique and required field.
-		- Email*    : Email must be a unique and valid otherwise users will not imported.
-		- FirstName (Optional): Select value for first name otherwise empty added.
-		- LastName  (Optional): Select value for last name otherwise empty added.
-		- Group* : First you need to create a group after that add group handle value in the CSV file. if group value will empty or group handle value incorrect then Default User Group consider (Settings->Users->settings(Allow public registration?) ).
-		- Status (Optional)  : Default value is pending. Status value should be active, pending, suspended. 
-		- Password (Optional): This field value is a simple string not a hashed values. If password value will empty and user status active then activation mail will send to your email address where password set link available.
+	    - Email*    : Email must be a unique and valid otherwise users will not imported.
+	    - FirstName (Optional): Select value for first name otherwise empty added.
+	    - LastName  (Optional): Select value for last name otherwise empty added.
+	    - Group* : First you need to create a group after that add group handle value in the CSV file. if group value will empty or group handle value incorrect then Default User Group consider (Settings->Users->settings(Allow public registration?) ).
+	    - Status (Optional)  : Default value is pending. Status value should be active, pending, suspended. 
+	    - Password (Optional): This field value is a simple string not a hashed values. If password value will empty and user status active then activation mail will send to your email address where password set link available.
 
-		-User fields:			  
-			Supported fieldType is 'Plain Text', 'Radio Buttons', 'Dropdown', 'Lightswitch', 'Email', 'URL' and 'Number'.
+	-User fields:			  
+	    Supported fieldType is 'Plain Text', 'Radio Buttons', 'Dropdown', 'Lightswitch', 'Email', 'URL' and 'Number'.
 
 ## SS User Import Export Roadmap
 
@@ -80,11 +80,11 @@ Three are two tabs avaliable in plugin settings.
 
 	- Username and Email are unique and required.
 	- Activation mail will only go if the proper email setting will be done( Settings < Email ).
-	- You have to manualy create user group and then group handle value use in the CSV file.	
+	- You have to manualy create user group and then use group handle value in the CSV file.	
 	- Pending status: User Status is a pending then admin need to active user account after that user will be able to login.
 	                  But if password not import or empty while importing then admin need to Send Activation Mail manualy from CP.
 	- Active status:  Activation mail has been sent to user email address where user can able to set password.
-					  But if password imported while user importing then user can able to directly login a account.
+			  But if password imported while user importing then user can able to directly login a account.
 
 
 Brought to you by [ssplugin](http://www.systemseeders.com/)
