@@ -34,7 +34,7 @@ To install the plugin, follow these instructions.
 
 ## Configuring SS User Import Export
 
-- Craft Pro version is required because mutiple users supported only in the pro version.
+- Craft Pro version is required because multiple users supported only in the pro version.
 
 - After plugin installed go to the plugin settings. If plugin not installed then first install plugin from settings > plugins.
 
