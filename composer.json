@@ -1,0 +1,45 @@
+{
+    "name": "ssplugin/ss-user-import-export",
+    "description": "Export users data in the CSV format and Import users using CSV file.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "ss user import export",
+        "user migration"
+    ],
+    "support": {
+        "docs": "https://github.com/ssplugin/ss-user-import-export/blob/master/README.md",
+        "issues": "https://github.com/ssplugin/ss-user-import-export/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ssplugin",
+            "homepage": "http://www.systemseeders.com/"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "ssplugin\\ssuserimportexport\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "SS User Import Export",
+        "handle": "ss-user-import-export",
+        "developer": "ssplugin",
+        "developerUrl": "http://www.systemseeders.com/",
+        "documentationUrl": "https://github.com/ssplugin/ss-user-import-export/blob/master/README.md",
+        "changelogUrl": "https://github.com/ssplugin/ss-user-import-export/blob/master/CHANGELOG.md",
+        "components": {
+            "ssUserImportExportService": "ssplugin\\ssuserimportexport\\services\\SsUserImportExportService"
+        },
+        "class": "ssplugin\\ssuserimportexport\\SsUserImportExport"
+    }
+}

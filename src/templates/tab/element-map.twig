@@ -1,0 +1,176 @@
+{% extends "ss-user-import-export/index" %}
+{% import "_includes/forms" as forms %}
+
+{% set title = 'SS User Import/Export' %}
+{% set selectedTab = 'import' %}
+{% set content %}
+{% if currentUser %}
+{% set settings = craft.app.getModule('ss-user-import-export').getSettings() %}
+{% set fields = currentUser.getFieldLayout().getFields() %}
+	{% if( settings.response_data is not empty and settings.response_header is not empty ) %}
+		{% if settings.lastUpFile is not empty %}
+			<p>Your last uploaded CSV file is <strong> {{ settings.lastUpFile }} </strong></p>
+			<a href="{{ url('/admin/ss-user-import-export/import') }}" class="btn">Add / Update new file </a>
+			<hr>
+		{% endif %}
+		<form method="post" action="" accept-charset="UTF-8">
+			{{ csrfInput() }}
+	        <input type="hidden" name="action" value="ss-user-import-export/import/user-import">
+	        <input type="hidden" name="pluginClass" value="ss-user-import-export">
+	        <input type="hidden" name="redirect" value="ss-user-import-export">
+	        <h3>Field Mapping</h3>
+
+	        <table width="60%">
+				<thead>
+					<th>Fields</th>
+					<th>Element</th>
+				</thead>
+				<tbody class="field-mapping-tbl">
+					<tr>
+						<td><strong>UserName*</strong><br>Username must be unique.</td>
+						<td>
+							<div class="select">
+								<select class="element" name="field[username]">
+									<option value="">-Select-</option>
+									{% for field in settings.response_header %}
+			                        	<option value="{{ field }}">{{ field }}</option>
+			                        {% endfor %}
+								</select>								
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>Email*</strong><br>Email must be unique.</td>
+						<td>
+							<div class="select">
+								<select class="element" name="field[email]">
+									<option value="">-Select-</option>
+									{% for field in settings.response_header %}
+			                        	<option value="{{ field }}">{{ field }}</option>
+			                        {% endfor %}
+								</select>								
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>Group*</strong><br></td>
+						<td>
+							<div class="select">
+								<select class="element" name="field[usergroup]">
+									<option value="">-Select-</option>
+									{% for field in settings.response_header %}
+			                        	<option value="{{ field }}">{{ field }}</option>
+			                        {% endfor %}
+								</select>								
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>firstName</strong><br></td>
+						<td>
+							<div class="select">
+								<select class="element" name="field[firstName]">
+									<option value="">-Select-</option>
+									{% for field in settings.response_header %}
+			                        	<option value="{{ field }}">{{ field }}</option>
+			                        {% endfor %}
+								</select>								
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>lastName</strong><br></td>
+						<td>
+							<div class="select">
+								<select class="element" name="field[lastName]">
+									<option value="">-Select-</option>
+									{% for field in settings.response_header %}
+			                        	<option value="{{ field }}">{{ field }}</option>
+			                        {% endfor %}
+								</select>								
+							</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td><strong>Status</strong><br>Status value should be active, pending, suspended otherwise pending status consider.</td>
+						<td>
+							<div class="select">
+								<select class="element" name="field[userstatus]">
+									<option value="">-Select-</option>
+									{% for field in settings.response_header %}
+			                        	<option value="{{ field }}">{{ field }}</option>
+			                        {% endfor %}
+								</select>								
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>Password</strong><br></td>
+						<td>
+							<div class="select">
+								<select class="element" name="field[password]">
+									<option value="">-Select-</option>
+									{% for field in settings.response_header %}
+			                        	<option value="{{ field }}">{{ field }}</option>
+			                        {% endfor %}
+								</select>								
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>Send Activation mail?</strong><br></td>
+						<td>
+							<div class="select">
+								<select class="element" name="sendmail">
+									<option value="no">No</option>
+	                    			<option value="yes">Yes</option>
+								</select>								
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			{% if fields|length %}
+				<hr>
+				<h3>User fields</h3>
+				<h5>(Importable fieldType: 'Plain Text', 'Radio Buttons', 'Dropdown', 'Lightswitch', 'Email', 'URL' and 'Number'.)</h5>
+				<table width="60%">
+					<thead>
+						<th>Fields</th>
+						<th>Element</th>
+					</thead>
+					<tbody class="field-mapping-tbl">
+					{% set fieldType = {
+		                'Plain Text':'Plain Text','URL':'URL','Radio Buttons':"Radio Buttons",			                'Dropdown':'Dropdown','Lightswitch':'Lightswitch','Email':'Email','Number':'Number'
+		            } %}
+                    {% for field in fields %}
+                        {% if field.displayName in fieldType|keys %}
+                        <tr>
+							<td><strong>{{ field.name }}</strong></td>
+							<td>
+								<div class="select">
+									<select class="element" name="userfield[{{ field.handle }}]">
+										<option value="">-Select-</option>
+										{% for fieldHead in settings.response_header %}
+				                        	<option value="{{ fieldHead }}">{{ fieldHead }}</option>
+				                        {% endfor %}
+									</select>								
+								</div>
+							</td>
+						</tr>
+                        {% endif %}
+                    {% endfor %}
+					</tbody>
+				</table>
+			{% endif %}			
+	        <div class="flex">
+	        	<input type="submit" class="btn submit" value="Import"> 
+	        	<a href="{{ url('/admin/ss-user-import-export/import') }}" class="btn submit">Cancel </a>
+	        </div>	       
+	    </form>
+	{% else %}
+		<p>Please upload CSV file <a href="{{url('ss-user-import-export/import')}}"> Here..</a></p>
+	{% endif %}
+{% endif %}
+{% endset %}

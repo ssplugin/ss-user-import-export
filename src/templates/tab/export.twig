@@ -1,0 +1,86 @@
+{% extends "ss-user-import-export/index" %}
+{% import "_includes/forms" as forms %}
+
+{% set title = 'SS User Import/Export' %}
+{% set selectedTab = 'export' %}
+{% set content %}
+{% if currentUser %}
+	{% set userGroups = craft.app.userGroups.getAllGroups() %}    
+	{% set fields = currentUser.getFieldLayout().getFields() %}
+	<form method="post" action="" accept-charset="UTF-8">
+		{{ csrfInput() }}
+        <input type="hidden" name="action" value="ss-user-import-export/export/export-user">
+        <input type="hidden" name="pluginClass" value="ss-user-import-export">
+        <input type="hidden" name="redirect" value="ss-user-import-export">
+        {% if userGroups|length %}
+        <div class="field" id="fd-usergroup-field">
+            <div class="heading">
+                <label id="fd-usergroup-label" for="fd_usergroup">Select user group</label>
+                <div class="instructions"><p>If you do not select the user group then users from all the groups will be exported.<br>You can able to select multiple group as well.</p></div>
+            </div>
+            <div class="input ltr">
+                <div class="select">
+                    <select multiple id="fd_usergroup" name="userGroup[]">
+                        {% for userGroup in userGroups %}
+                        	<option value="{{ userGroup.id }}">{{ userGroup.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="field" id="fd-filename-field">
+            <div class="heading">
+                <label id="fd-filename-label" for="fd_filename">File name</label>
+                <div class="instructions"><p>Enter filename here.</p></div>
+            </div>
+            <div class="input ltr">
+                <input class="text fullwidth" type="text" name="filename">
+            </div>
+        </div>       
+        <div class="field" id="fd-status-field">
+            <div class="heading">
+                <label id="fd-status-label" for="fd_status">Select status</label>
+                <div class="instructions"><p>If you do not select the status then users from all status will be exported.</p></div>
+            </div>
+            <div class="">
+                <div class="select">
+                    <select multiple id="fd_status" name="status[]">                    	                      
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="suspended">Suspended</option>
+                        <option value="locked">Locked</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        {% if fields|length %}
+        <div id="fields-check-field" class="field">
+            <div class="heading">
+                <label id="fields-check-label" class="" for="fields-check">[Exportable fieldType: 'Plain Text', 'Radio Buttons', 'Dropdown', 'Lightswitch', 'Email', 'URL' and 'Number']<br><br>Select User fields </label>                
+            </div>           
+            <div class="input ltr">
+                <div class="checkbox-group">
+                    {% set fieldType = {
+                        'Plain Text':'Plain Text','URL':'URL','Radio Buttons':"Radio Buttons",
+                        'Dropdown':'Dropdown','Lightswitch':'Lightswitch','Email':'Email','Number':'Number'
+                    } %}
+                    {% for field in fields %}
+                        {% if field.displayName in fieldType|keys %}
+                        <div>
+                            <input type="checkbox" class="checkbox" id="{{ field.handle }}" name="userfields[]" value="{{ field.handle }}">
+                            <label for="{{ field.handle }}">{{ field.name }}</label>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+     	<div class="buttons">
+            <input class="btn submit" type="submit" value="{{ 'Export'|t }}">
+        </div> 
+	</form>
+{% endif %}
+{% endset %}

@@ -1,0 +1,12 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("ssplugin\\ssuserimportexport\\assetbundles\\ssuserimportexport\\SsUserImportExportAsset") %}
+{% do view.registerAssetBundle("ssplugin\\ssuserimportexport\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{% set title = 'SS User Import/Export' %}
+
+{% set tabs = {
+    export: { label: "Export"|t, url: url('ss-user-import-export') },
+    import: { label: "Import"|t, url: url('ss-user-import-export/import') },
+} %}
