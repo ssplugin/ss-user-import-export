@@ -40,7 +40,7 @@ To install the plugin, follow these instructions.
 
 - Importing a CSV file format:
 	- Firts row in the CSV file must be heading.
-  <img src="http://datadazzle.com/ssplugin/csv-format.png" alt="csv-example">
+  <img src="http://datadazzle.com/ssplugin/csv-format.jpeg" alt="csv-example">
 
 ## Using SS User Import Export
 
