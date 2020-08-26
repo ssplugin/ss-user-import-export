@@ -142,10 +142,16 @@
 					</thead>
 					<tbody class="field-mapping-tbl">
 					{% set fieldType = {
-		                'Plain Text':'Plain Text','URL':'URL','Radio Buttons':"Radio Buttons",			                'Dropdown':'Dropdown','Lightswitch':'Lightswitch','Email':'Email','Number':'Number'
-		            } %}
+                        'craft\\fields\\PlainText':'Plain Text',
+                        'craft\\fields\\Url':'URL',
+                        'craft\\fields\\RadioButtons':"Radio Buttons",
+                        'craft\\fields\\Dropdown':'Dropdown',
+                        'craft\\fields\\Lightswitch':'Lightswitch',
+                        'craft\\fields\\Email':'Email',
+                        'craft\\fields\\Number':'Number'
+                    } %}
                     {% for field in fields %}
-                        {% if field.displayName in fieldType|keys %}
+                        {% if field.className in fieldType|keys %}
                         <tr>
 							<td><strong>{{ field.name }}</strong></td>
 							<td>
