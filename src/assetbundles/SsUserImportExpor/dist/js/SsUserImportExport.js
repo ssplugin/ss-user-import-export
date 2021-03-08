@@ -1,0 +1,11 @@
+/**
+ * SS User Import Export plugin for Craft CMS
+ *
+ * SS User Import Export JS
+ *
+ * @author    ssplugin
+ * @copyright Copyright (c) 2020 ssplugin
+ * @link      http://www.systemseeders.com/
+ * @package   SsUserImportExport
+ * @since     1.0.0
+ */
