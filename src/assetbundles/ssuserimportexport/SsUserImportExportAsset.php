@@ -43,7 +43,7 @@ class SsUserImportExportAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = "@ssplugin/ssuserimportexport/assetbundles/ssuserimportexport/dist";
+        $this->sourcePath = "@ssplugin/ssuserimportexport/assetbundles/SsUserImportExport/dist";
 
         // define the dependencies
         $this->depends = [

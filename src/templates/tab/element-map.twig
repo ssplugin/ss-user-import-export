@@ -7,10 +7,11 @@
 {% if currentUser %}
 {% set settings = craft.app.getModule('ss-user-import-export').getSettings() %}
 {% set fields = currentUser.getFieldLayout().getFields() %}
+{% set userGroups = craft.app.userGroups.getAllGroups() %}  
 	{% if( settings.response_data is not empty and settings.response_header is not empty ) %}
 		{% if settings.lastUpFile is not empty %}
 			<p>Your last uploaded CSV file is <strong> {{ settings.lastUpFile }} </strong></p>
-			<a href="{{ url('/admin/ss-user-import-export/import') }}" class="btn">Add / Update new file </a>
+			<a href="{{ cpUrl() }}/ss-user-import-export/import" class="btn">Add / Update new file </a>
 			<hr>
 		{% endif %}
 		<form method="post" action="" accept-charset="UTF-8">
@@ -24,6 +25,7 @@
 				<thead>
 					<th>Fields</th>
 					<th>Element</th>
+					<th>Default</th>
 				</thead>
 				<tbody class="field-mapping-tbl">
 					<tr>
@@ -64,6 +66,18 @@
 								</select>								
 							</div>
 						</td>
+						{% if userGroups|length %}
+						<td>
+							<div class="select">
+								<select class="element" name="field[default_group]">
+									<option value="">-Select-</option>
+									{% for userGroup in userGroups %}
+			                        	<option value="{{ userGroup.id }}">{{ userGroup.name }}</option>
+			                        {% endfor %}
+								</select>								
+							</div>
+						</td>
+						{% endif %}
 					</tr>
 					<tr>
 						<td><strong>firstName</strong><br></td>
@@ -102,6 +116,16 @@
 			                        	<option value="{{ field }}">{{ field }}</option>
 			                        {% endfor %}
 								</select>								
+							</div>
+						</td>
+						<td>
+							<div class="select">
+			                    <select id="fd_status" name="field[default_userstatus]">                    	                      
+			                        <option value="active">Active</option>
+			                        <option value="pending">Pending</option>
+			                        <option value="suspended">Suspended</option>
+			                        <option value="locked">Locked</option>
+			                    </select>			
 							</div>
 						</td>
 					</tr>
@@ -172,7 +196,7 @@
 			{% endif %}			
 	        <div class="flex">
 	        	<input type="submit" class="btn submit" value="Import"> 
-	        	<a href="{{ url('/admin/ss-user-import-export/import') }}" class="btn submit">Cancel </a>
+	        	<a href="{{ cpUrl() }}/ss-user-import-export/import" class="btn submit">Cancel </a>
 	        </div>	       
 	    </form>
 	{% else %}

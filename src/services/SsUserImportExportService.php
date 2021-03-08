@@ -53,31 +53,41 @@ class SsUserImportExportService extends Component
         foreach ( $settings->response_data as $key => $value ) {
             $fields = [];
             foreach ( $request['field'] as $k => $val ) {
-                if( $val != '' ) {
-                    $fields[$k] = $value[$val];
+                
+                if( $k != 'default_group' && $k != 'default_userstatus' ){
+                    if( $val != '' ) {
+                        $fields[$k] = $value[$val];
+                    }else{
+                        $fields[$k] = '';
+                    }
                 }else{
-                    $fields[$k] = '';
+                    $fields[$k] = $val;
+                    $fields[$k] = $val;
                 }
-            }                
+            }              
             if( !empty( $fields['username'] ) && !empty($fields['email']) ){               
                 if (filter_var($fields['email'], FILTER_VALIDATE_EMAIL)) {
                     $isUsernameExist = User::find()->username($fields['username'])->status(['active','suspended', 'pending', 'locked'])->one();
                     $isEmailExist = User::find()->email($fields['email'])->status(['active','suspended', 'pending', 'locked'])->one();                         
                     if( empty($isUsernameExist) && empty($isEmailExist)) {
                         $group = '';
-                        if( $fields['usergroup'] == 'admin') {
-                            $group = 'admin';
-                        } else {
-                            $groups = Craft::$app->userGroups->getGroupByHandle( $fields['usergroup'] );
-                            if( !empty($groups)){
-                                $group = $groups['id'];
+                        if( !empty( $fields['default_group'] ) ){
+                            $group = $fields['default_group'];
+                        }else{
+                            if( $fields['usergroup'] == 'admin') {
+                                $group = 'admin';
                             } else {
-                                $projectConfig = Craft::$app->getSystemSettings()->getSettings('users');
-                                if( !empty($projectConfig['defaultGroup']) ){
-                                    $defaultGroup = Craft::$app->userGroups->getGroupByUid($projectConfig['defaultGroup']);
-                                    $group = $defaultGroup['id'];
+                                $groups = Craft::$app->userGroups->getGroupByHandle( $fields['usergroup'] );
+                                if( !empty($groups)){
+                                    $group = $groups['id'];
+                                } else {
+                                    $projectConfig = Craft::$app->getSystemSettings()->getSettings('users');
+                                    if( !empty($projectConfig['defaultGroup']) ){
+                                        $defaultGroup = Craft::$app->userGroups->getGroupByUid($projectConfig['defaultGroup']);
+                                        $group = $defaultGroup['id'];
+                                    }
                                 }
-                            }
+                            } 
                         }
                         if( isset($group) && !empty($group)){                                                    
                             if( !empty($fields)){                               
@@ -93,7 +103,12 @@ class SsUserImportExportService extends Component
                                 if( $group == 'admin'){
                                     $user->admin  = true;
                                 }
-                                switch (strtolower($fields['userstatus'])) {
+                                if( !empty( $fields['default_userstatus'] ) ){
+                                    $userStatus = $fields['default_userstatus'];
+                                }else{
+                                    $userStatus = $fields['userstatus'];
+                                }
+                                switch (strtolower($userStatus)) {
                                     case 'active':
                                     case '1':
                                         $user->pending  = false;

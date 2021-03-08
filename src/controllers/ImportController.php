@@ -97,10 +97,14 @@ class ImportController extends Controller
     public function actionUserImport(){       
         $request = Craft::$app->getRequest()->getBodyParams();        
         if( !empty($request) ){
-            if( empty($request['field']['username']) || empty($request['field']['email']) || empty($request['field']['usergroup']) ){
-                $url = UrlHelper::cpUrl('ss-user-import-export/import/element-map');
-                Craft::$app->session->setError('Select Username, email and Group. These fields are required.');
-                return $this->redirect($url);                
+            $url = UrlHelper::cpUrl('ss-user-import-export/import/element-map');
+            if( empty($request['field']['username']) || empty($request['field']['email']) ){
+                Craft::$app->session->setError('Username and Email are required.');  
+                return $this->redirect($url);      
+            }
+            if( empty($request['field']['usergroup']) && empty($request['field']['default_group']) ){
+                Craft::$app->session->setError('User Group is required.');
+                return $this->redirect($url);
             }
             SsUserImportExport::$plugin->ssUserImportExportService->importUser($request);           
         }
