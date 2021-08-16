@@ -143,7 +143,7 @@ class SsUserImportExportService extends Component
                                         Craft::$app->users->assignUserToGroups($user->id, [$group]);
                                     }
                                     if($request['sendmail'] == 'yes'){
-                                        if( strtolower($fields['userstatus']) == 'active' || strtolower($fields['userstatus']) == '1'){
+                                        if( strtolower($userStatus) == 'active' || strtolower($userStatus) == '1'){
                                             Craft::$app->getUsers()->sendActivationEmail($user);
                                         }
                                     }
