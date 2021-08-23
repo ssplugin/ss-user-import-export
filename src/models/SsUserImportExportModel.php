@@ -15,19 +15,29 @@ use ssplugin\ssuserimportexport\SsUserImportExport;
 use Craft;
 use craft\base\Model;
 
-/**
- * SsUserImportExportModel Model
- *
- * Models are containers for data. Just about every time information is passed
- * between services, controllers, and templates in Craft, it’s passed via a model.
- *
- * https://craftcms.com/docs/plugins/models
- *
- * @author    ssplugin
- * @package   SsUserImportExport
- * @since     1.0.0
- */
 class SsUserImportExportModel extends Model
 {
-    //future reference
+    public $id;
+    public $uid;
+    public $response_header = '';
+    public $response_data = '';
+    public $lastUpFile = '';
+
+    /**
+     * @var \DateTime
+     */
+    public $dateCreated;
+
+    /**
+     * @var \DateTime
+     */
+    public $dateUpdated;
+
+    public function dateTimeAttributes(): array
+    {
+        return [
+            'dateCreated',
+            'dateUpdated',
+        ];
+    }
 }

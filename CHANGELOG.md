@@ -1,5 +1,12 @@
 # SS User Import Export Changelog
 
+## 1.0.3 - 2021-08-23
+### Fixed
+- Default user status does not trigger sendActivationEmail
+
+### Added
+- Import can be possibe if allowAdminChanges false
+
 ## 1.0.2 - 2021-03-08
 ### Fixed
 - Composer 2 compatibility

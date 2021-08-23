@@ -5,15 +5,21 @@
 {% set selectedTab = 'import' %}
 {% set content %}
 {% if currentUser %}
-{% set settings = craft.app.getModule('ss-user-import-export').getSettings() %}
+
+{% set settings = craft.ssUserImportExport.getImportData() %}
+
 {% set fields = currentUser.getFieldLayout().getFields() %}
+
 {% set userGroups = craft.app.userGroups.getAllGroups() %}  
+
 	{% if( settings.response_data is not empty and settings.response_header is not empty ) %}
+
 		{% if settings.lastUpFile is not empty %}
 			<p>Your last uploaded CSV file is <strong> {{ settings.lastUpFile }} </strong></p>
 			<a href="{{ cpUrl() }}/ss-user-import-export/import" class="btn">Add / Update new file </a>
 			<hr>
 		{% endif %}
+
 		<form method="post" action="" accept-charset="UTF-8">
 			{{ csrfInput() }}
 	        <input type="hidden" name="action" value="ss-user-import-export/import/user-import">
@@ -120,7 +126,8 @@
 						</td>
 						<td>
 							<div class="select">
-			                    <select id="fd_status" name="field[default_userstatus]">                    	                      
+			                    <select id="fd_status" name="field[default_userstatus]">
+			                    	<option value="">-Select-</option>       
 			                        <option value="active">Active</option>
 			                        <option value="pending">Pending</option>
 			                        <option value="suspended">Suspended</option>

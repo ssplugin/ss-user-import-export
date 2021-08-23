@@ -77,102 +77,101 @@ class ExportController extends Controller
     public function actionExportUser()
     {        
         if( Craft::$app->getEdition() === Craft::Solo ){            
-            Craft::$app->session->setError('Craft Pro is required.');
-            return $this->redirect(UrlHelper::cpUrl('ss-user-import-export'));          
+            Craft::$app->session->setError( 'Craft Pro is required.' );
+            return $this->redirect( UrlHelper::cpUrl( 'ss-user-import-export' ) );          
         }
         $this->requirePostRequest();
         $request  = Craft::$app->getRequest()->getBodyParams();            
-        if( isset($request['filename']) &&  !empty($request['filename'])){
-            $filename = $request['filename'].'.csv';
+        if( isset( $request[ 'filename' ] ) &&  !empty( $request[ 'filename' ] ) ) {
+            $filename = $request[ 'filename' ].'.csv';
         }
         
-        if( isset($request['status']) && !empty($request['status'])){
-            $status = implode(',', $request['status']);
+        if( isset( $request[ 'status' ] ) && !empty( $request[ 'status' ] ) ) {
+            $status = implode( ',', $request[ 'status' ] );
         }
-        if( isset($request['userGroup'])){
-            $groups = implode(',', $request['userGroup']);            
-            if( isset($status) && !empty($status)){
-                $users = \craft\elements\User::find()->status($status)->groupId($groups)->all();
+        if( isset( $request[ 'userGroup' ] ) ) {
+            $groups = implode( ',', $request[ 'userGroup' ] );            
+            if( isset( $status ) && !empty( $status ) ) {
+                $users = \craft\elements\User::find()->status( $status )->groupId( $groups )->all();
             } else {
                 $users = \craft\elements\User::find()
-                    ->status(['active','suspended', 'pending', 'locked'])
-                    ->groupId($groups)->all();
+                    ->status( ['active','suspended', 'pending', 'locked'] )
+                    ->groupId( $groups )->all();
             }
         } else {
-            if( isset($status) && !empty($status)){
-                $users = \craft\elements\User::find()->status($status)->all();
+            if( isset( $status ) && !empty( $status ) ) {
+                $users = \craft\elements\User::find()->status( $status )->all();
             }else{
-                $users = \craft\elements\User::find()->status(['active','suspended', 'pending', 'locked'])->all();
+                $users = \craft\elements\User::find()->status( [ 'active','suspended', 'pending', 'locked' ] )->all();
             }
         }
-        if( !empty($users) ){           
-            $header = ['username', 'email', 'group', 'firstname', 'lastname', 'status'];
-            if(isset($request['userfields'])){
-               $header = array_merge($header, $request['userfields']); 
+        if( !empty( $users ) ) {
+            $header = [ 'username', 'email', 'group', 'firstname', 'lastname', 'status' ];
+            if( isset( $request[ 'userfields' ] ) ) {
+               $header = array_merge( $header, $request[ 'userfields' ] ); 
             }           
             $userdata = [];
-            foreach ($users as $key => $value) {                
-                $userdata[$key]['username'] = $value->username;
-                $userdata[$key]['email'] = $value->email;
+            foreach ( $users as $key => $value ) {                             
+                $userdata[ $key ][ 'username' ] = $value->username;
+                $userdata[ $key ][ 'email' ] = $value->email;
                 
-                if( !empty($value->getGroups())){
-                    $userdata[$key]['group'] = $value->getGroups()[0]->handle;
-                } elseif ($value->admin == 1) {
-                    $userdata[$key]['group'] = 'admin';                
+                if( !empty( $value->getGroups() ) ) {
+                    $userdata[ $key ][ 'group' ] = $value->getGroups()[0]->handle;
+                } elseif ( $value->admin == 1 ) {
+                    $userdata[ $key ][ 'group' ] = 'admin';                
                 } else {
-                    $userdata[$key]['group'] = '';
+                    $userdata[ $key ][ 'group' ] = '';
                 }
 
-                $userdata[$key]['firstName'] = $value->firstName;
-                $userdata[$key]['lastName'] = $value->lastName;               
-                $userdata[$key]['status'] = $value->getStatus();
+                $userdata[ $key ][ 'firstName' ] = $value->firstName;
+                $userdata[ $key ][ 'lastName' ] = $value->lastName;               
+                $userdata[ $key ][ 'status' ] = $value->getStatus();
                 
-                if(isset($request['userfields'])){                	                	        
-                    $fieldval = $this->getUserFieldVal($request['userfields'], $value);                 
-                    $userdata[$key] = array_merge($userdata[$key], $fieldval);                     
+                if( isset( $request[ 'userfields' ] ) ) {                	                	        
+                    $fieldval = $this->getUserFieldVal( $request[ 'userfields' ], $value );                 
+                    $userdata[ $key ] = array_merge( $userdata[ $key ], $fieldval );
                 }
             }
             
-            array_unshift($userdata, $header);                
-            $file = tempnam(sys_get_temp_dir(), 'export');
-            $fp = fopen($file, 'wb');                
-            foreach ($userdata as $result) {
-                fputcsv($fp, $result, ',');
+            array_unshift( $userdata, $header );                
+            $file = tempnam( sys_get_temp_dir(), 'export' );
+            $fp = fopen( $file, 'wb' );                
+            foreach ( $userdata as $result ) {
+                fputcsv( $fp, $result, ',' );
             }
-            fclose($fp);
-            $contents = file_get_contents($file);
-            unlink($file);
+            fclose( $fp );
+            $contents = file_get_contents( $file );
+            unlink( $file );
             if( empty( $filename )) {
                 $filename = 'registered_users.csv';
             }                
-            $mimeType = FileHelper::getMimeTypeByExtension($filename);                
+            $mimeType = FileHelper::getMimeTypeByExtension( $filename );                
             $response = Craft::$app->getResponse();
             $response->content = $contents;
             $response->format = Response::FORMAT_RAW;
-            $response->setDownloadHeaders($filename, $mimeType);
-            return $response; 
+            $response->setDownloadHeaders( $filename, $mimeType );
+            return $response;
         } else {
-            Craft::$app->session->setError("Could not found user.");
-            return $this->redirect(UrlHelper::cpUrl('ss-user-import-export'));
+            Craft::$app->session->setError( "Could not found user." );
+            return $this->redirect( UrlHelper::cpUrl( 'ss-user-import-export' ) );
         }
-        
         return true;
     }
 
-    public function getUserFieldVal($fields, $value){    	
-        foreach ($fields as $field) {            
-            $fieldType = Craft::$app->fields->getFieldByHandle($field);
-            if( $fieldType->displayName() == "Radio Buttons" || $fieldType->displayName() == 'Dropdown'){
-            	$options = $value[$field]->getOptions();
+    public function getUserFieldVal( $fields, $value ) {
+        foreach ( $fields as $field ) {            
+            $fieldType = Craft::$app->fields->getFieldByHandle( $field );
+            if( $fieldType->displayName() == "Radio Buttons" || $fieldType->displayName() == 'Dropdown' ) {
+            	$options = $value[ $field ]->getOptions();
                 $selectedOptions = [];
                 foreach ( $options as $option ) {
                     if ( $option->selected ) {
                         $selectedOptions[] = $option->value;
                     }
                 }
-                $fieldval[$field] = implode(',', $selectedOptions);
+                $fieldval[ $field ] = implode( ',', $selectedOptions );
             }else{
-            	$fieldval[$field] = $value[$field];
+            	$fieldval[ $field ] = $value[ $field ];
             }            
         }        
         return $fieldval;

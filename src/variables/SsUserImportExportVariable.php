@@ -9,24 +9,19 @@
  */
 
 namespace ssplugin\ssuserimportexport\variables;
-
 use ssplugin\ssuserimportexport\SsUserImportExport;
-
 use Craft;
 
-/**
- * SS User Import Export Variable
- *
- * Craft allows plugins to provide their own template variables, accessible from
- * the {{ craft }} global variable (e.g. {{ craft.ssUserImportExport }}).
- *
- * https://craftcms.com/docs/plugins/variables
- *
- * @author    ssplugin
- * @package   SsUserImportExport
- * @since     1.0.0
- */
 class SsUserImportExportVariable
 {
-    //future reference.    
+    public function getImportData(){
+        $importData = SsUserImportExport::getInstance()->ssuserimportservice->getImportData();
+        $data = [];
+        if( !empty( $importData ) ){
+            $data[ 'response_header' ] = json_decode( $importData->response_header );
+            $data[ 'response_data' ] = json_decode( $importData->response_data );
+            $data[ 'lastUpFile' ] = $importData->lastUpFile;
+        }
+        return $data;
+    }    
 }

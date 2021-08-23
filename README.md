@@ -11,6 +11,10 @@ This plugin requires Craft CMS 3.0.0-beta.23 or later.
 
 To install the plugin, follow these instructions.
 
+1. In the Craft CMS Control Panel, go to Settings → Plugins Store and search for SS User Import Export:
+
+OR
+
 1. Open your terminal and go to your Craft project:
 
         cd /path/to/project
@@ -19,7 +23,12 @@ To install the plugin, follow these instructions.
 
         composer require ssplugin/ss-user-import-export
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for SS User Import Export.
+3. Executing Migrations:
+
+        php craft migrate/up --plugin=ss-user-import-export
+
+4. In the Craft CMS Control Panel, go to Settings → Plugins and click the “Install” button for SS User Import Export:
+
 
 ## SS User Import Export features
 

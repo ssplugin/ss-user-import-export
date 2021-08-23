@@ -17,27 +17,9 @@ use craft\elements\User;
 use yii\web\NotFoundHttpException;
 use Craft;
 use craft\web\Controller;
+use ssplugin\ssuserimportexport\models\SsUserImportExportModel;
+use ssplugin\ssuserimportexport\records\SsUserImportExportRecord;
 
-/**
- * Import Controller
- *
- * Generally speaking, controllers are the middlemen between the front end of
- * the CP/website and your plugin’s services. They contain action methods which
- * handle individual tasks.
- *
- * A common pattern used throughout Craft involves a controller action gathering
- * post data, saving it on a model, passing the model off to a service, and then
- * responding to the request appropriately depending on the service method’s response.
- *
- * Action methods begin with the prefix “action”, followed by a description of what
- * the method does (for example, actionSaveIngredient()).
- *
- * https://craftcms.com/docs/plugins/controllers
- *
- * @author    ssplugin
- * @package   SsUserImportExport
- * @since     1.0.0
- */
 class ImportController extends Controller
 {    
     protected $allowAnonymous = ['index', 'import-user','user-import', 'element-map'];
@@ -60,7 +42,7 @@ class ImportController extends Controller
             Craft::$app->session->setError('Craft Pro is required.');
             return $this->redirect(UrlHelper::cpUrl('ss-user-import-export/import'));          
         }
-
+        
         if( isset( $_FILES['file'] ) ) {            
             $file_name = $_FILES['file']['name'];          
             $file_tmp  = $_FILES['file']['tmp_name'];            
@@ -81,32 +63,51 @@ class ImportController extends Controller
                     }
                 }                
                 fclose($str);
-                $plugin   = SsUserImportExport::getInstance();
-                
-                $settings = ['response_data'  => $data, 'response_header' => $header, 'lastUpFile' => $file_name];
-                $url = UrlHelper::cpUrl('ss-user-import-export/import/element-map');
-                $isSave = Craft::$app->getPlugins()->savePluginSettings( $plugin, $settings );
-                Craft::$app->session->setNotice('File uploaded successfully.');
-                return $this->redirect($url);               
+                if( !empty( $data ) && !empty( $header ) ){
+                    $existimportData = SsUserImportExport::getInstance()->ssuserimportservice->getImportData();
+                    if( !empty( $existimportData ) && !empty( $existimportData->response_data ) ){
+                        $record = SsUserImportExport::getInstance()->ssuserimportservice->getImportData();
+                    }else{
+                        $record = new SsUserImportExportModel();
+                    }
+                    $record->response_data = json_encode( $data );
+                    $record->response_header = json_encode( $header );
+                    $record->lastUpFile = $file_name;
+
+                    if($record->validate()){
+                        
+                        $isSave = SsUserImportExport::getInstance()->ssuserimportservice->saveImportData($record);
+                        if( $isSave ){
+                            Craft::$app->getSession()->setNotice('File uploaded successfully');
+                            $url = UrlHelper::cpUrl('ss-user-import-export/import/element-map');
+                            return $this->redirect($url);
+                        }else{
+                            Craft::$app->getSession()->setNotice('Failed to upload file');
+                        }
+                    }   
+                }else{
+                    Craft::$app->getSession()->setError('CSV file data is not valid format');
+                }
+                            
             } else {
                 Craft::$app->session->setError('Please choose a CSV file..');
             }                              
         }
     }
 
-    public function actionUserImport(){       
+    public function actionUserImport() {       
         $request = Craft::$app->getRequest()->getBodyParams();        
-        if( !empty($request) ){
-            $url = UrlHelper::cpUrl('ss-user-import-export/import/element-map');
-            if( empty($request['field']['username']) || empty($request['field']['email']) ){
-                Craft::$app->session->setError('Username and Email are required.');  
-                return $this->redirect($url);      
+        if( !empty( $request ) ){
+            $url = UrlHelper::cpUrl( 'ss-user-import-export/import/element-map' );
+            if( empty( $request[ 'field' ][ 'username' ] ) || empty( $request[ 'field' ][ 'email' ] ) ){
+                Craft::$app->session->setError( 'Username and Email are required.' );  
+                return $this->redirect( $url );      
             }
-            if( empty($request['field']['usergroup']) && empty($request['field']['default_group']) ){
-                Craft::$app->session->setError('User Group is required.');
-                return $this->redirect($url);
+            if( empty( $request[ 'field' ][ 'usergroup' ] ) && empty( $request[ 'field' ][ 'default_group' ] ) ) {
+                Craft::$app->session->setError( 'User Group is required.' );
+                return $this->redirect( $url );
             }
-            SsUserImportExport::$plugin->ssUserImportExportService->importUser($request);           
+            SsUserImportExport::$plugin->ssUserImportExportService->importUser( $request );           
         }
     }
 }   

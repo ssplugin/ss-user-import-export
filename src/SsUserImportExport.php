@@ -63,7 +63,7 @@ class SsUserImportExport extends Plugin
      *
      * @var string
      */
-    public $schemaVersion = '1.0.2';
+    public $schemaVersion = '1.0.3';
 
     /**
      * Set to `true` if the plugin should have a settings view in the control panel.
@@ -97,6 +97,10 @@ class SsUserImportExport extends Plugin
     {
         parent::init();
         self::$plugin = $this;
+
+        $this->setComponents([
+            'ssuserimportservice' => \ssplugin\ssuserimportexport\services\SsUserImportExportService::class,
+        ]);
 
         // Register our site routes
         Event::on(

@@ -5,7 +5,7 @@
 {% set selectedTab = 'import' %}
 {% set content %}
 {% if currentUser %}
-	{% set settings = craft.app.getModule('ss-user-import-export').getSettings() %}
+	{% set settings = craft.ssUserImportExport.getImportData() %}
     {% if( settings.response_data is not empty and settings.response_header is not empty ) %}        
         <a class="btn submit" href="{{ url('ss-user-import-export/import/element-map') }}">Element mapping..</a>
     {% endif %}
@@ -15,10 +15,9 @@
         <input type="hidden" name="action" value="ss-user-import-export/import/import-user">
         <input type="hidden" name="pluginClass" value="ss-user-import-export">
         <input type="hidden" name="redirect" value="ss-user-import-export">
-
         <h3>Please upload/ Import CSV file here.</h3>
         <input type="file" name="file" multiple></p>      	
-  		<input type="submit" class="btn submit" value="Upload File"> 
+  		<input type="submit" class="btn submit" value="Upload File">
     </form>
 {% endif %}
 {% endset %}
