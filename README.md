@@ -1,11 +1,11 @@
-# SS User Import Export plugin for Craft CMS 3.x
+# SS User Import Export plugin for Craft CMS 4.x
 
 Import users and export users made fast and simple!
 Craft User migration is vital part when site migration process. This plugin help new user import using csv and export user in the csv file. As well as keep users data in the CSV format.
 
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0-beta.23 or later.
+This plugin requires Craft CMS 4 or later and PHP 8 or later.
 
 ## Installation
 
@@ -93,7 +93,7 @@ Three are two tabs avaliable in plugin settings.
 	- Pending status: User Status is a pending then admin need to active user account after that user will be able to login.
 	                  But if password not import or empty while importing then admin need to Send Activation Mail manualy from CP.
 	- Active status:  Activation mail has been sent to user email address where user can able to set password.
-			  But if password imported while user importing then user can able to directly login a account.
+			  But if password imported while user importing then use   r can able to directly login a account.
 
 
 Brought to you by [ssplugin](http://www.systemseeders.com/)

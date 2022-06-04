@@ -6,7 +6,8 @@
 {% set content %}
 {% if currentUser %}
 	{% set settings = craft.ssUserImportExport.getImportData() %}
-    {% if( settings.response_data is not empty and settings.response_header is not empty ) %}        
+
+    {% if( settings is not empty and settings.response_data is not empty and settings.response_header is not empty ) %}        
         <a class="btn submit" href="{{ url('ss-user-import-export/import/element-map') }}">Element mapping..</a>
     {% endif %}
     <hr>

@@ -6,7 +6,7 @@
 {% set content %}
 {% if currentUser %}
 	{% set userGroups = craft.app.userGroups.getAllGroups() %}    
-	{% set fields = currentUser.getFieldLayout().getFields() %}
+	{% set fields = currentUser.getFieldLayout().getCustomFields() %}
 	<form method="post" action="" accept-charset="UTF-8">
 		{{ csrfInput() }}
         <input type="hidden" name="action" value="ss-user-import-export/export/export-user">
