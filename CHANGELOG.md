@@ -1,9 +1,5 @@
 # SS User Import Export Changelog
 
-## 1.0.4 - 2022-06-04
-### Added
-- Craft cms 4 compatability.
-
 ## 1.0.3 - 2021-08-23
 ### Fixed
 - Default user status does not trigger sendActivationEmail
@@ -17,6 +13,7 @@
 
 ### Added
 - Default user group and user status added while importing.
+
 
 ## 1.0.1 - 2020-08-26
 ### Fixed

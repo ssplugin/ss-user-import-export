@@ -36,7 +36,7 @@ class Settings extends Model
      *
      * @var string
      */
-    public array|string|null $response_data = [];
-    public array|string|null $response_header = [];
+    public $response_header = '';
+    public $response_data = '';
     public $lastUpFile = '';
 }

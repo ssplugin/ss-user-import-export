@@ -52,7 +52,7 @@ class ExportController extends Controller
      *         The actions must be in 'kebab-case'
      * @access protected
      */
-    protected array|int|bool $allowAnonymous = ['index', 'export-user'];
+    protected $allowAnonymous = ['index', 'export-user'];
 
     // Public Methods
     // =========================================================================

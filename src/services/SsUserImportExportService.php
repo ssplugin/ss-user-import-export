@@ -40,7 +40,7 @@ class SsUserImportExportService extends Component
     public function importUser( $request )
     {        
         $importData = $this->getImportData();
-
+        
         if( empty( $importData ) ){
             Craft::$app->session->setError("Import data not found yet");
             return;
@@ -78,7 +78,7 @@ class SsUserImportExportService extends Component
                     
                     $isUsernameExist = User::find()->username( $fields[ 'username' ] )->status( [ 'active','suspended', 'pending', 'locked' ] )->one();
                     $isEmailExist = User::find()->email( $fields[ 'email' ] )->status( [ 'active','suspended', 'pending', 'locked' ] )->one();
-                    
+                  
                     if( empty( $isUsernameExist ) && empty( $isEmailExist ) ) {
                         $group = '';
                         
@@ -89,13 +89,10 @@ class SsUserImportExportService extends Component
                                 $group = 'admin';
                             } else {
                                 $groups = Craft::$app->userGroups->getGroupByHandle( $fields['usergroup'] );
-
                                 if( !empty( $groups ) ) {
                                     $group = $groups['id'];
                                 } else {
-
-                                    $projectConfig = Craft::$app->projectConfig->get('users');
-                                                                       
+                                    $projectConfig = Craft::$app->getSystemSettings()->getSettings('users');
                                     if( !empty( $projectConfig['defaultGroup'] ) ) {
                                         $defaultGroup = Craft::$app->userGroups->getGroupByUid( $projectConfig['defaultGroup'] );
                                         $group = $defaultGroup['id'];
@@ -105,7 +102,7 @@ class SsUserImportExportService extends Component
                         }
 
                         if( isset( $group ) && !empty( $group ) ) {
-                                                
+                                                                        
                             if( !empty( $fields ) ) {                               
 
                                 $user = new User();                    
@@ -124,11 +121,10 @@ class SsUserImportExportService extends Component
                                 }else{
                                     $userStatus = $fields[ 'userstatus' ];
                                 }
-                                
                                 switch( strtolower( $userStatus ) ) {
                                     case 'active':
                                     case '1':
-                                        $user->active = true;
+                                        $user->pending  = false;
                                         break;
                                     case 'pending':
                                     case '0':
@@ -169,12 +165,10 @@ class SsUserImportExportService extends Component
                                 }
                             }
                         }
-
                     }
                 }
             }
         }
-        
         if( $usercount > 0 ){
             Craft::$app->session->setNotice( "Users has been added successfully." );
             return;
@@ -182,13 +176,10 @@ class SsUserImportExportService extends Component
         return;
     }
 
-    public function getImportData(): mixed
+    public function getImportData()
     {
         $rows = $this->_createQuery()
             ->one();
-        if(!$rows){
-            return null;
-        }
         return new SsUserImportExportModel( $rows );
     }
 

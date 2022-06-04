@@ -21,7 +21,7 @@ use craft\events\PluginEvent;
 use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
 use craft\events\RegisterUrlRulesEvent;
-use craft\base\Model;
+
 use yii\base\Event;
 
 /**
@@ -63,21 +63,21 @@ class SsUserImportExport extends Plugin
      *
      * @var string
      */
-    public string $schemaVersion = '1.0.4';
+    public $schemaVersion = '1.0.3';
 
     /**
      * Set to `true` if the plugin should have a settings view in the control panel.
      *
      * @var bool
      */
-    public bool $hasCpSettings = true;
+    public $hasCpSettings = true;
 
     /**
      * Set to `true` if the plugin should have its own section (main nav item) in the control panel.
      *
      * @var bool
      */
-    public bool $hasCpSection = true;
+    public $hasCpSection = true;
 
     // Public Methods
     // =========================================================================
@@ -172,7 +172,7 @@ class SsUserImportExport extends Plugin
     }
 
 
-    private function getCpUrlRules(): array
+    private function getCpUrlRules()
     {
         return array(
             'ss-user-import-export' => "ss-user-import-export/export",
@@ -188,7 +188,7 @@ class SsUserImportExport extends Plugin
      *
      * @return \craft\base\Model|null
      */
-    protected function createSettingsModel(): model
+    protected function createSettingsModel()
     {
         return new Settings();
     }
@@ -199,7 +199,7 @@ class SsUserImportExport extends Plugin
      *
      * @return string The rendered settings HTML
      */
-    protected function settingsHtml(): ?String
+    protected function settingsHtml(): string
     {
         return Craft::$app->view->renderTemplate(
             'ss-user-import-export/settings',

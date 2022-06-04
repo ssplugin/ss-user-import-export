@@ -2,7 +2,7 @@
     "name": "ssplugin/ss-user-import-export",
     "description": "Export users data in the CSV format and Import users using CSV file.",
     "type": "craft-plugin",
-    "version": "1.0.4",
+    "version": "1.0.3",
     "keywords": [
         "craft",
         "cms",
@@ -23,8 +23,7 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^4.0",
-        "php": "^8.0"
+        "craftcms/cms": "^3.0.0-RC1"
     },
     "autoload": {
         "psr-4": {

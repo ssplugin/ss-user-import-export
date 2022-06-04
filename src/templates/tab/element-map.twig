@@ -8,7 +8,7 @@
 
 {% set settings = craft.ssUserImportExport.getImportData() %}
 
-{% set fields = currentUser.getFieldLayout().getCustomFields() %}
+{% set fields = currentUser.getFieldLayout().getFields() %}
 
 {% set userGroups = craft.app.userGroups.getAllGroups() %}  
 

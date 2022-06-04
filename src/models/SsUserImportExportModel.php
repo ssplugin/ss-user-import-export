@@ -19,8 +19,8 @@ class SsUserImportExportModel extends Model
 {
     public $id;
     public $uid;
-    public string|array $response_data = [];
-    public string|array $response_header = [];
+    public $response_header = '';
+    public $response_data = '';
     public $lastUpFile = '';
 
     /**

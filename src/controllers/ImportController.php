@@ -22,10 +22,10 @@ use ssplugin\ssuserimportexport\records\SsUserImportExportRecord;
 
 class ImportController extends Controller
 {    
-    protected array|int|bool $allowAnonymous = ['index', 'import-user','user-import', 'element-map'];
+    protected $allowAnonymous = ['index', 'import-user','user-import', 'element-map'];
 
     public function actionIndex()
-    {        
+    {
         $this->renderTemplate('ss-user-import-export/tab/import');
     }
 
