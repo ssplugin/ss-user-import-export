@@ -1,11 +1,11 @@
-# SS User Import Export plugin for Craft CMS 4.x
+# SS User Import Export plugin for Craft CMS 5.x
 
 Import users and export users made fast and simple!
 Craft User migration is vital part when site migration process. This plugin help new user import using csv and export user in the csv file. As well as keep users data in the CSV format.
 
 ## Requirements
 
-This plugin requires Craft CMS 4 or later and PHP 8 or later.
+This plugin requires Craft CMS 5 or later and PHP 8.2 or later.
 
 ## Installation
 
