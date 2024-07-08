@@ -2,11 +2,11 @@
 
 ## 2.0.0 - 2024-07-08
 ### Added
-- Craft cms 5 compatability and most significant changes.
+- Craft cms 5 compatibility and most significant changes.
 
 ## 1.0.4 - 2022-06-04
 ### Added
-- Craft cms 4 compatability.
+- Craft cms 4 compatibility.
 
 ## 1.0.3 - 2021-08-23
 ### Fixed
