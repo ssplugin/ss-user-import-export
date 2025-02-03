@@ -104,67 +104,64 @@ class SsUserImportExportService extends Component
                             } 
                         }
 
-                        if( isset( $group ) && !empty( $group ) ) {
-                                                
-                            if( !empty( $fields ) ) {                               
+                        if( !empty( $fields ) ) {
 
-                                $user = new User();                    
-                                $user->username = $fields[ 'username' ];
-                                $user->firstName= $fields[ 'firstName' ];
-                                $user->lastName = $fields[ 'lastName' ];
-                                $user->email    = $fields[ 'email' ];
-                                if( !empty( $fields[ 'password' ] ) ) {
-                                    $user->newPassword  = trim( $fields[ 'password' ] );    
-                                }
-                                if( $group == 'admin'){
-                                    $user->admin  = true;
-                                }
-                                if( !empty( $fields[ 'default_userstatus' ] ) ){
-                                    $userStatus = $fields[ 'default_userstatus' ];
-                                }else{
-                                    $userStatus = $fields[ 'userstatus' ];
-                                }
-                                
-                                switch( strtolower( $userStatus ) ) {
-                                    case 'active':
-                                    case '1':
-                                        $user->active = true;
-                                        break;
-                                    case 'pending':
-                                    case '0':
-                                        $user->pending  = true;
-                                        break;
-                                    case 'suspended':                        
-                                        $user->suspended  = true;
-                                        break;
-                                    default:
-                                        $user->pending  = true;
-                                        break;
-                                }
-                                
-                                if( isset( $request[ 'userfield' ] ) && !empty( $request[ 'userfield' ] ) ) {
-                                    $userfield = [];
-                                    foreach ( $request[ 'userfield' ] as $k => $v ) {
-                                        if( !empty( $v ) ) {
-                                            $userfield[ $k ] = $value[ $v ];
-                                        }
-                                    }
-                                    if( !empty( $userfield ) ) {
-                                        $user->setFieldValues( $userfield );
+                            $user = new User();
+                            $user->username = $fields[ 'username' ];
+                            $user->firstName= $fields[ 'firstName' ];
+                            $user->lastName = $fields[ 'lastName' ];
+                            $user->email    = $fields[ 'email' ];
+                            if( !empty( $fields[ 'password' ] ) ) {
+                                $user->newPassword  = trim( $fields[ 'password' ] );
+                            }
+                            if( $group == 'admin'){
+                                $user->admin  = true;
+                            }
+                            if( !empty( $fields[ 'default_userstatus' ] ) ){
+                                $userStatus = $fields[ 'default_userstatus' ];
+                            }else{
+                                $userStatus = $fields[ 'userstatus' ];
+                            }
+
+                            switch( strtolower( $userStatus ) ) {
+                                case 'active':
+                                case '1':
+                                    $user->active = true;
+                                    break;
+                                case 'pending':
+                                case '0':
+                                    $user->pending  = true;
+                                    break;
+                                case 'suspended':
+                                    $user->suspended  = true;
+                                    break;
+                                default:
+                                    $user->pending  = true;
+                                    break;
+                            }
+
+                            if( isset( $request[ 'userfield' ] ) && !empty( $request[ 'userfield' ] ) ) {
+                                $userfield = [];
+                                foreach ( $request[ 'userfield' ] as $k => $v ) {
+                                    if( !empty( $v ) ) {
+                                        $userfield[ $k ] = $value[ $v ];
                                     }
                                 }
-                                                             
-                                $isSaveUser = Craft::$app->getElements()->saveElement( $user, false );
-                                
-                                if( $isSaveUser ){
-                                    $usercount++;                                    
-                                    if( $group != 'admin' ) {
-                                        Craft::$app->users->assignUserToGroups( $user->id, [ $group ] );
-                                    }
-                                    if( $request[ 'sendmail' ] == 'yes' ) {                                       
-                                        if( strtolower( $userStatus ) == 'active' || strtolower( $userStatus ) == '1' ) {
-                                            Craft::$app->getUsers()->sendActivationEmail( $user );
-                                        }
+                                if( !empty( $userfield ) ) {
+                                    $user->setFieldValues( $userfield );
+                                }
+                            }
+
+                            $isSaveUser = Craft::$app->getElements()->saveElement( $user, false );
+
+                            if( $isSaveUser ){
+                                $usercount++;
+                                if( !empty( $group ) && $group != 'admin' ) {
+                                    Craft::$app->users->assignUserToGroups( $user->id, [ $group ] );
+                                }
+                                if( $request[ 'sendmail' ] == 'yes' ) {
+                                    if( strtolower( $userStatus ) == 'active' || strtolower( $userStatus ) == '1' ) {
+                                        Craft::$app->getUsers()->sendActivationEmail( $user );
                                     }
                                 }
                             }
